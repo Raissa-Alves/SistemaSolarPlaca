@@ -1,0 +1,38 @@
+body {
+   font-family: Arial, sans-serif;
+   margin: 30px;
+        }
+
+h1, h2 {
+    color: #004173;
+          }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+                }
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+                   }
+
+a {
+    color: beige;
+    text-decoration: none;
+                   }
+
+
+button {
+   background-color: #015C91;
+   color: white;
+   border: none;
+   padding: 8px 12px;
+   cursor: pointer;
+   border-radius: 5px;
+   gap: 30px;
+             }
+
+

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerenciamento de Usuários</title>
+  <link rel="stylesheet" href="{% static 'gerenciar_usuarios.css' %}">
+</head>
+<body>
+  {% block content %}
+  <h1>Gestão de Usuários</h1>
+  
+  <h2>Pessoas Físicas</h2>
+  <table>
+    <tr>
+      <th>Tipo</th><th>Nome</th><th>Email</th><th>CPF</th><th>Telefone</th><th>Cidade</th><th>Bairro</th><th>País</th><th>Ações</th>
+    </tr>
+    {% if fisicas %}
+       {% for p in fisicas %}
+      <tr>
+        <td>PF</td>
+        <td>{{ p.nome_completo }}</td>
+        <td>{{ p.email }}</td>
+        <td>{{ p.cpf }}</td>
+        <td>{{ p.telefone_principal }}</td>
+        <td>{{ p.cidade }}</td>
+        <td>{{ p.bairro }}</td>
+        <td>{{ p.pais }}</td>
+        <td>
+          <button> <a href="">Editar</a> </button> 
+          <button> <a href="">Deletar</a> </button>
+        </td>
+      </tr>
+      {% endfor %}
+
+    {% else %}
+                <tr>
+                    <td colspan="9" style="text-align:center;">Nenhum Usuário Cadastrado</td>
+                </tr>
+    {% endif %}
+  </table>
+
+  <h2>Pessoas Jurídicas</h2>
+  <table>
+    <tr>
+      <th>Tipo</th><th>Razão Social</th><th>CNPJ</th><th>Data Abertura</th><th>Email</th><th>Inscrição Estadual</th><th>Telefone Principal</th><th>Ações</th>
+    </tr>
+    {% if juridicas %}
+      {% for p in juridicas %}
+      <tr>
+        <td>PJ</td>
+        <td>{{ p.razao_social }}</td>
+        <td>{{ p.cnpj }}</td>
+        <td>{{ p.data_abertura }}</td>
+        <td>{{ p.email }}</td>
+        <td>{{ p.inscricao_estadual}}</td>
+        <td>{{ p.telefone_principal }}</td>
+        <td>
+          <button> <a href="">Editar</a> </button>
+          <button> <a href="">Deletar</a> </button> 
+        </td>
+      </tr>
+      {% endfor %}
+
+    {% else %}
+      <tr>
+        <td colspan="9" style="text-align:center;">Nenhum Usuário Cadastrado</td>
+      </tr>  
+    {% endif %}
+  </table>
+ {% endblock %}
+</body>
+</html>

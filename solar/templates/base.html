@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sistema Solar{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'Estilo-base.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Sistema Solar</div>
+            <ul>
+                <li><a href="{% url 'gerenciamento' %}">Gerenciar</a></li>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'lista_produtos' %}">Produtos</a></li>
+                <li><a href="{% url 'Categoria' %}?categoria=INVERSORES">Inversores</a></li>
+                <li><a href="{% url 'Categoria' %}?categoria=BATERIAS">Bateria</a></li>
+                <li><a href="{% url 'Categoria' %}?categoria=MODULOS">Modulos</a></li>
+                <li><a href="{% url 'Categoria' %}?categoria=COMPONENTES_ELETRONICOS">Componentes Eletronicos</a></li>
+                <li><a href="{% url 'Categoria' %}?categoria=PARAFUSOS">Parafusos</a></li>
+                <li><a href="{% url 'Categoria' %}?categoria=CABOS">Cabos</a></li>
+                <li><a href="{% url 'Categoria' %}?categoria=ESTRUTURAS_GALVANIZADAS">Estruturas Galvanizadas</a></li>
+                <li><a href="{% url 'cadastrar_produto' %}">Cadastrar Produto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Sistema Solar. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
