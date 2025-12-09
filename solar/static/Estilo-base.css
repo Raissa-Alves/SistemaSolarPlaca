@@ -22,31 +22,44 @@ body {
     background: linear-gradient(135deg, var(--background-color) 0%, #FAD092 100%);
     color: var(--text-color);
     min-height: 100vh;
+  
+    
 }
 
 header {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
     background: linear-gradient(to right, #FEA667, #FFE461);
     color: white;
     padding: 1rem 0;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    width: 100vw;
+   
+
 }
 
 nav {
+    display: flex;
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 2rem;
+    justify-content: left;
 }
 
 .logo {
+    display: flex;
     font-size: 1.8rem;
     font-weight: 700;
     background: linear-gradient(45deg, #ffffff,#e68a00 );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    
+    justify-content: left;
 }
 
 nav ul {
@@ -70,9 +83,9 @@ nav ul li a:hover {
 }
 
 main {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 2rem;
+    max-width: 1100px;
+    margin: auto;
+    padding: 2rem;
 }
 
 .form-container {

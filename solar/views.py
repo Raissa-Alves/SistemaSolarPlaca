@@ -165,3 +165,13 @@ def Listar_por_categoria(request):
            return render(request, 'listar_produtos.html', {
              'nome_categoria': nome_categoria,
              'produtos': produtos})
+       
+def carrinho_view(request):
+    
+    carrinho = request.session.get("carrinho", {})
+    total = sum(item["preco"] * item["quantidade"] for item in carrinho.values())
+
+    return render(request, "carrinho.html", {
+        "carrinho": carrinho,
+        "total": total
+    })

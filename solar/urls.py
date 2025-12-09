@@ -3,6 +3,7 @@ from solar import views
 
 urlpatterns = [
     path('home/',views.home,name='home'),
+    path("carrinho/", views.carrinho_view, name="carrinho"),
     path('Categoria/', views.Listar_por_categoria, name='Categoria'),
     path('lista_produtos', views.lista_produtos, name='lista_produtos'),
     path('cadastrar_produto/', views.cadastrar_produto, name='cadastrar_produto'),

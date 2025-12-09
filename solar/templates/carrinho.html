@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Carrinho</title>
+  
+<style>
+    /* === Estilo geral === */
+body {
+    font-family: Arial, sans-serif;
+    background: #fdf8f2;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Título */
+h1 {
+    text-align: center;
+    color: #ff7b00;
+    margin-bottom: 25px;
+    font-size: 32px;
+}
+
+/* === Tabela do carrinho === */
+table {
+    width: 90%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+table th {
+    background: #ff7b00;
+    color: white;
+    padding: 12px;
+    font-size: 18px;
+    text-align: left;
+}
+
+table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    font-size: 16px;
+}
+
+table tr:hover {
+    background: #fff3e5;
+}
+
+/* Botão remover */
+a {
+    background: #ff7b00;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+a:hover {
+    background: #e06e00;
+}
+
+/* Total */
+h3 {
+    text-align: center;
+    margin-top: 25px;
+    color: #333;
+    font-size: 24px;
+}
+
+/* Quando o carrinho estiver vazio */
+p {
+    text-align: center;
+    color: #ff7b00;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+</style>
+</head>
+
+<body>
+
+{% block content %}
+<h1>Carrinho</h1>
+
+{% if produtos %}
+<table>
+    <tr>
+        <th>Produto</th>
+        <th>Quantidade</th>
+        <th>Subtotal</th>
+        <th>Ação</th>
+    </tr>
+
+    {% for item in produtos %}
+    <tr>
+        <td>{{ item.produto.nome }}</td>
+        <td>{{ item.quantidade }}</td>
+        <td>R$ {{ item.subtotal }}</td>
+        <td>
+            <a href="{% url 'remover_carrinho' item.produto.id %}">Remover</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Total: R$ {{ total }}</h3>
+
+{% else %}
+<p>Seu carrinho está vazio.</p>
+{% endif %}
+
+{% endblock %}
+</body>
+</html>
+
