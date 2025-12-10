@@ -6,9 +6,7 @@
     
     <!-- Botões de navegação -->
     <div class="mb-4">
-        <a href="{% url 'listar_produtos' %}" class="btn btn-outline-primary">
-            <i class="bi bi-arrow-left"></i> Continuar Comprando
-        </a>
+        
         {% if carrinho %}
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#limparCarrinhoModal">
             <i class="bi bi-trash"></i> Limpar Carrinho
@@ -114,8 +112,7 @@
     <div class="alert alert-info">
         <h4 class="alert-heading">Carrinho vazio!</h4>
         <p>Seu carrinho de compras está vazio. Adicione alguns produtos para continuar.</p>
-        <hr>
-        <a href="{% url 'listar_produtos' %}" class="btn btn-primary">Ver Produtos</a>
+        
     </div>
     {% endif %}
 </div>
