@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from solar.models import PessoaFisica, PessoaJuridica
 from django.urls import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from solar.models import Produto
 from solar.forms import ProdutoForm
 from django.contrib import messages
@@ -166,12 +166,62 @@ def Listar_por_categoria(request):
              'nome_categoria': nome_categoria,
              'produtos': produtos})
        
-def carrinho_view(request):
+def adicionar_ao_carrinho(request, produto_id):
+    """Adiciona produto ao carrinho via sessÃ£o"""
+    if request.method == 'POST':
+        quantidade = int(request.POST.get('quantidade', 1))
+        
+        # ObtÃ©m o produto
+        produto = get_object_or_404(Produto, id=produto_id)
+        
+        # Inicializa o carrinho na sessÃ£o se nÃ£o existir
+        if 'carrinho' not in request.session:
+            request.session['carrinho'] = {}
+        
+        carrinho = request.session['carrinho']
+        
+        # Converte produto_id para string (chave de dicionÃ¡rio)
+        produto_id_str = str(produto_id)
+        
+        # Se o produto jÃ¡ estÃ¡ no carrinho, incrementa a quantidade
+        if produto_id_str in carrinho:
+            carrinho[produto_id_str]['quantidade'] += quantidade
+        else:
+            # Adiciona novo produto ao carrinho
+            carrinho[produto_id_str] = {
+                'id': produto.id,
+                'nome': produto.nome,
+                'preco': float(produto.preco),  # Convertendo para float para JSON
+                'quantidade': quantidade,
+                'imagem': produto.imagem.url if produto.imagem else '',
+                'codigo': produto.codigo,
+            }
+        
+        # Salva a sessÃ£o
+        request.session.modified = True
+        messages.success(request, f'{quantidade} x {produto.nome} adicionado ao carrinho!')
+        
+        return redirect('listar_produtos')
     
-    carrinho = request.session.get("carrinho", {})
-    total = sum(item["preco"] * item["quantidade"] for item in carrinho.values())
+    return redirect('listar_produtos')
 
-    return render(request, "carrinho.html", {
-        "carrinho": carrinho,
-        "total": total
-    })
+
+def ver_carrinho(request):
+    """Exibe o carrinho de compras"""
+    carrinho = request.session.get('carrinho', {})
+    
+    # Calcula totais
+    total_itens = 0
+    total_preco = 0
+    
+    for item in carrinho.values():
+        total_itens += item['quantidade']
+        total_preco += item['quantidade'] * item['preco']
+    
+    context = {
+        'carrinho': carrinho,
+        'total_itens': total_itens,
+        'total_preco': total_preco,
+    }
+    
+    return render(request, 'carrinho.html', context)
