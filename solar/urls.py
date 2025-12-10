@@ -1,9 +1,14 @@
 from django.urls import path
 from solar import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('home/',views.home,name='home'),
-    path("carrinho/", views.carrinho_view, name="carrinho"),
+
+    path('carrinho/adicionar/<int:produto_id>/', views.adicionar_ao_carrinho, name='adicionar_ao_carrinho'),
+    path('carrinho/', views.ver_carrinho, name='ver_carrinho'),
+    
     path('Categoria/', views.Listar_por_categoria, name='Categoria'),
     path('lista_produtos', views.lista_produtos, name='lista_produtos'),
     path('cadastrar_produto/', views.cadastrar_produto, name='cadastrar_produto'),
