@@ -1,0 +1,147 @@
+{% extends 'base.html' %}  <!-- Se você tiver um base.html -->
+{% load carrinho_filters %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Meu Carrinho</h1>
+    
+    <!-- Botões de navegação -->
+    <div class="mb-4">
+        <a href="{% url 'listar_produtos' %}" class="btn btn-outline-primary">
+            <i class="bi bi-arrow-left"></i> Continuar Comprando
+        </a>
+        {% if carrinho %}
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#limparCarrinhoModal">
+            <i class="bi bi-trash"></i> Limpar Carrinho
+        </button>
+        {% endif %}
+    </div>
+    
+    <!-- Mensagens -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    {% if carrinho %}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Produto</th>
+                    <th>Preço Unitário</th>
+                    <th>Quantidade</th>
+                    <th>Subtotal</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produto_id, item in carrinho.items %}
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            {% if item.imagem %}
+                            <img src="{{ item.imagem }}" alt="{{ item.nome }}" class="img-thumbnail me-3" style="width: 80px; height: 80px; object-fit: cover;">
+                            {% endif %}
+                            <div>
+                                <strong>{{ item.nome }}</strong><br>
+                                <small>Código: {{ item.codigo }}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>R$ {{ item.preco|floatformat:2 }}</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <!-- Formulário para decrementar -->
+                            <form method="POST" action="{% url 'atualizar_quantidade' item.id %}" class="me-2">
+                                {% csrf_token %}
+                                <input type="hidden" name="acao" value="decrementar">
+                                <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-dash"></i>
+                                </button>
+                            </form>
+                            
+                            <span class="mx-2">{{ item.quantidade }}</span>
+                            
+                            <!-- Formulário para incrementar -->
+                            <form method="POST" action="{% url 'atualizar_quantidade' item.id %}" class="ms-2">
+                                {% csrf_token %}
+                                <input type="hidden" name="acao" value="incrementar">
+                                <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                    <td>R$ {{ item.quantidade|multiply:item.preco|floatformat:2 }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'remover_do_carrinho' item.id %}" onsubmit="return confirm('Remover este produto do carrinho?')">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="bi bi-trash"></i> Remover
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot class="table-secondary">
+                <tr>
+                    <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                    <td><strong>R$ {{ total_preco|floatformat:2 }}</strong></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="text-end"><strong>Total de Itens:</strong></td>
+                    <td><strong>{{ total_itens }}</strong></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    
+    <!-- Botão para finalizar compra (você pode implementar depois) -->
+    <div class="text-end mt-4">
+        <button class="btn btn-success btn-lg">
+            <i class="bi bi-check-circle"></i> Finalizar Compra
+        </button>
+    </div>
+    
+    {% else %}
+    <div class="alert alert-info">
+        <h4 class="alert-heading">Carrinho vazio!</h4>
+        <p>Seu carrinho de compras está vazio. Adicione alguns produtos para continuar.</p>
+        <hr>
+        <a href="{% url 'listar_produtos' %}" class="btn btn-primary">Ver Produtos</a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Modal para limpar carrinho -->
+{% if carrinho %}
+<div class="modal fade" id="limparCarrinhoModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Limpar Carrinho</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja remover todos os itens do carrinho?</p>
+                <p><strong>Esta ação não pode ser desfeita.</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form method="POST" action="{% url 'limpar_carrinho' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Limpar Carrinho</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
