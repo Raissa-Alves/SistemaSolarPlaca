@@ -201,9 +201,9 @@ def adicionar_ao_carrinho(request, produto_id):
         request.session.modified = True
         messages.success(request, f'{quantidade} x {produto.nome} adicionado ao carrinho!')
         
-        return redirect('listar_produtos')
+        return redirect('lista_produtos')
     
-    return redirect('listar_produtos')
+    return redirect('lista_produtos')
 
 
 def ver_carrinho(request):
