@@ -32,8 +32,23 @@
                 </p>
                 <p class="card-text"><small class="text-muted">{{ produto.descricao|truncatewords:20 }}</small></p>
             </div>
-            <button> <a href="{% url 'carrinho'  %}">Adicionar ao Carrinho</a> </button>
-            
+            <!-- Formulário para adicionar ao carrinho -->
+                    <form method="POST" action="{% url 'adicionar_ao_carrinho' produto.id %}">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Qtd</span>
+                            <input type="number" 
+                                   name="quantidade" 
+                                   value="1" 
+                                   min="1" 
+                                   max="{{ produto.Q_Estoque }}"
+                                   class="form-control" 
+                                   required>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-cart-plus"></i> Adicionar ao carrinho
+                            </button>
+                        </div>
+                    </form>
         </div>
     </div>
     {% empty %}
